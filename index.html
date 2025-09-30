@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>日期计算器</title>
+    <title>日期计算器 By Alan</title>
     <style>
         * {
             margin: 0;
@@ -35,6 +35,20 @@
             text-align: center;
             margin-bottom: 25px;
             font-weight: 600;
+            display: flex;
+            justify-content: center;
+            align-items: baseline;
+            gap: 8px;
+        }
+        
+        .title-main {
+            font-size: 28px;
+        }
+        
+        .title-by {
+            font-size: 18px;
+            color: #666;
+            font-weight: 500;
         }
         
         .description {
@@ -133,11 +147,14 @@
 </head>
 <body>
     <div class="container">
-        <h1>日期计算器</h1>
+        <h1>
+            <span class="title-main">日期计算器</span>
+            <span class="title-by">By Alan</span>
+        </h1>
         
         <div class="description">
             输入入境日期和停留天数，计算出入境有效期<br>
-            <small>（开始日期为第一天）</small>
+            <small>（入境日期为第一天）</small>
         </div>
         
         <div class="input-group">
@@ -148,23 +165,26 @@
         
         <div class="input-group">
             <label for="daysToAdd">停留天数</label>
-            <input type="number" id="daysToAdd" min="1" placeholder="输入天数">
+            <input type="number" id="daysToAdd" min="1" placeholder="输入停留天数">
             <div class="error" id="daysError">请输入有效的天数（≥1）</div>
         </div>
         
-        <button class="calculate-btn" id="calculateBtn">计算新日期</button>
+        <button class="calculate-btn" id="calculateBtn">计算有效期</button>
         
         <div class="result-group">
             <div class="result-label">计算结果</div>
-            <div class="result" id="result">请输入日期和天数进行计算</div>
+            <div class="result" id="result">请输入入境日期和停留天数进行计算</div>
         </div>
         
         <div class="example">
             <strong>示例：</strong><br>
-            入境日期：2023-10-01，停留天数：5<br>
-            计算结果：2023-10-05（第5天）
+            入境日期：2023-10-01，停留天数：30<br>
+            计算结果：2023-10-30（有效期至）
         </div>
         
+        <div class="footer">
+            <!-- 已删除版权信息 -->
+        </div>
     </div>
 
     <script>
@@ -209,7 +229,7 @@
                     return;
                 }
                 
-                // 计算新日期（开始日期为第一天）
+                // 计算新日期（入境日期为第一天）
                 const startDate = new Date(startDateValue);
                 const newDate = new Date(startDate);
                 newDate.setDate(startDate.getDate() + daysToAddValue - 1);
@@ -223,7 +243,7 @@
                     <div>${formattedNewDate}</div>
                     <div style="font-size: 14px; color: #666; margin-top: 5px;">
                         ${newDate.toISOString().split('T')[0]} 
-                        （从 ${startDateValue} 起算第 ${daysToAddValue} 天）
+                        （有效期至，从 ${startDateValue} 起算 ${daysToAddValue} 天）
                     </div>
                 `;
             });
