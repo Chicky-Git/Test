@@ -19,7 +19,6 @@
             align-items: center;
             min-height: 100vh;
             padding: 20px;
-            position: relative;
         }
         
         .container {
@@ -138,24 +137,13 @@
             color: #555;
         }
         
-        .footer {
-            text-align: center;
-            margin-top: 25px;
-            color: #777;
-            font-size: 14px;
-        }
-        
-        /* 计数窗口样式 */
+        /* 计数窗口样式 - 集成到主界面 */
         .counter-window {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: white;
+            background-color: #f8f9fa;
             border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
             padding: 15px;
-            width: 180px;
-            border-left: 4px solid #4a90e2;
+            margin-top: 20px;
+            border: 1px solid #e9ecef;
         }
         
         .counter-title {
@@ -163,39 +151,46 @@
             color: #333;
             margin-bottom: 10px;
             font-size: 16px;
+            text-align: center;
+        }
+        
+        .counter-items {
+            display: flex;
+            justify-content: space-around;
         }
         
         .counter-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 14px;
+            text-align: center;
         }
         
         .counter-label {
             color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
         }
         
         .counter-value {
             font-weight: 600;
             color: #4a90e2;
+            font-size: 18px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #777;
+            font-size: 14px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+        
+        .copyright {
+            font-weight: 500;
+            color: #555;
         }
     </style>
 </head>
 <body>
-    <!-- 计数窗口 -->
-    <div class="counter-window">
-        <div class="counter-title">计算统计</div>
-        <div class="counter-item">
-            <span class="counter-label">今日计算:</span>
-            <span class="counter-value" id="todayCount">0</span>
-        </div>
-        <div class="counter-item">
-            <span class="counter-label">总计计算:</span>
-            <span class="counter-value" id="totalCount">0</span>
-        </div>
-    </div>
-    
     <!-- 主容器 -->
     <div class="container">
         <h1>
@@ -233,8 +228,23 @@
             计算结果：2023-10-31（有效期至）
         </div>
         
+        <!-- 计数窗口 - 集成到主界面 -->
+        <div class="counter-window">
+            <div class="counter-title">计算统计</div>
+            <div class="counter-items">
+                <div class="counter-item">
+                    <div class="counter-label">今日计算</div>
+                    <div class="counter-value" id="todayCount">0</div>
+                </div>
+                <div class="counter-item">
+                    <div class="counter-label">总计计算</div>
+                    <div class="counter-value" id="totalCount">0</div>
+                </div>
+            </div>
+        </div>
+        
         <div class="footer">
-            <!-- 已删除版权信息 -->
+            <div class="copyright">上海和平饭店©️2025</div>
         </div>
     </div>
 
