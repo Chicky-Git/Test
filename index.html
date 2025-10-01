@@ -153,8 +153,8 @@
         </h1>
         
         <div class="description">
-            填写入境日期和停留天数，计算入境有效期<br>
-            <small>（入境日期为第一天）</small>
+            输入入境日期和停留天数，计算出入境有效期<br>
+            <small>（停留天数对应到第N+1天的日期）</small>
         </div>
         
         <div class="input-group">
@@ -179,11 +179,11 @@
         <div class="example">
             <strong>示例：</strong><br>
             入境日期：2023-10-01，停留天数：30<br>
-            计算结果：2023-10-30（有效期至）
+            计算结果：2023-10-31（有效期至）
         </div>
         
         <div class="footer">
-            上海和平饭店@2025
+            <!-- 已删除版权信息 -->
         </div>
     </div>
 
@@ -229,10 +229,10 @@
                     return;
                 }
                 
-                // 计算新日期（入境日期为第一天）
+                // 计算新日期（停留天数对应到第N+1天的日期）
                 const startDate = new Date(startDateValue);
                 const newDate = new Date(startDate);
-                newDate.setDate(startDate.getDate() + daysToAddValue - 1);
+                newDate.setDate(startDate.getDate() + daysToAddValue); // 修改：直接加上天数，不加1也不减1
                 
                 // 格式化日期显示
                 const options = { year: 'numeric', month: 'long', day: 'numeric' };
