@@ -19,6 +19,7 @@
             align-items: center;
             min-height: 100vh;
             padding: 20px;
+            position: relative;
         }
         
         .container {
@@ -143,9 +144,59 @@
             color: #777;
             font-size: 14px;
         }
+        
+        /* 计数窗口样式 */
+        .counter-window {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            width: 180px;
+            border-left: 4px solid #4a90e2;
+        }
+        
+        .counter-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .counter-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .counter-label {
+            color: #666;
+        }
+        
+        .counter-value {
+            font-weight: 600;
+            color: #4a90e2;
+        }
     </style>
 </head>
 <body>
+    <!-- 计数窗口 -->
+    <div class="counter-window">
+        <div class="counter-title">计算统计</div>
+        <div class="counter-item">
+            <span class="counter-label">今日计算:</span>
+            <span class="counter-value" id="todayCount">0</span>
+        </div>
+        <div class="counter-item">
+            <span class="counter-label">总计计算:</span>
+            <span class="counter-value" id="totalCount">0</span>
+        </div>
+    </div>
+    
+    <!-- 主容器 -->
     <div class="container">
         <h1>
             <span class="title-main">日期计算器</span>
@@ -195,11 +246,58 @@
             const resultDiv = document.getElementById('result');
             const dateError = document.getElementById('dateError');
             const daysError = document.getElementById('daysError');
+            const todayCountEl = document.getElementById('todayCount');
+            const totalCountEl = document.getElementById('totalCount');
+            
+            // 初始化计数数据
+            let todayCount = 0;
+            let totalCount = 0;
+            let today = new Date().toDateString();
+            
+            // 尝试从localStorage加载计数数据
+            try {
+                const savedData = localStorage.getItem('dateCalculatorCounts');
+                if (savedData) {
+                    const counts = JSON.parse(savedData);
+                    const savedToday = counts.date;
+                    
+                    // 如果是同一天，使用保存的数据
+                    if (savedToday === today) {
+                        todayCount = counts.todayCount;
+                        totalCount = counts.totalCount;
+                    } else {
+                        // 如果是新的一天，重置今日计数
+                        todayCount = 0;
+                        totalCount = counts.totalCount;
+                    }
+                }
+            } catch (e) {
+                console.log('无法加载计数数据，将重新开始计数');
+            }
+            
+            // 更新计数显示
+            function updateCountDisplay() {
+                todayCountEl.textContent = todayCount;
+                totalCountEl.textContent = totalCount;
+            }
+            
+            // 保存计数数据到localStorage
+            function saveCountData() {
+                const counts = {
+                    date: today,
+                    todayCount: todayCount,
+                    totalCount: totalCount
+                };
+                localStorage.setItem('dateCalculatorCounts', JSON.stringify(counts));
+            }
             
             // 设置默认日期为今天
-            const today = new Date();
-            const formattedDate = today.toISOString().split('T')[0];
+            const currentDate = new Date();
+            const formattedDate = currentDate.toISOString().split('T')[0];
             startDateInput.value = formattedDate;
+            
+            // 初始化计数显示
+            updateCountDisplay();
             
             // 计算按钮点击事件
             calculateBtn.addEventListener('click', function() {
@@ -232,7 +330,7 @@
                 // 计算新日期（停留天数对应到第N+1天的日期）
                 const startDate = new Date(startDateValue);
                 const newDate = new Date(startDate);
-                newDate.setDate(startDate.getDate() + daysToAddValue); // 修改：直接加上天数，不加1也不减1
+                newDate.setDate(startDate.getDate() + daysToAddValue);
                 
                 // 格式化日期显示
                 const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -246,6 +344,12 @@
                         （有效期至，从 ${startDateValue} 起算 ${daysToAddValue} 天）
                     </div>
                 `;
+                
+                // 更新计数
+                todayCount++;
+                totalCount++;
+                updateCountDisplay();
+                saveCountData();
             });
             
             // 输入框回车触发计算
